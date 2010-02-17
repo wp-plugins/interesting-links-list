@@ -33,9 +33,9 @@ Installation is like any WordPress plugin:
 
 == Frequently Asked Questions ==
 
-= The plugin doesn't work. =
+= Any questions =
 
-Please scheck http://wp.linkzone.ro.
+Please check http://wp.linkzone.ro.
 
 
 == Screenshots ==
