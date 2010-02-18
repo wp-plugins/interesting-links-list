@@ -3,10 +3,11 @@
 Plugin Name: Interesting Links List
 Plugin URI: http://wp.linkzone.ro
 Author: Madalin F.
-Author URI: -
+Author URI: http://wp.linkzone.ro
 Description: Show in post or page, a list of links you choose and let any visitor contribute. To use it insert "[interesting]" in any post or page body and you're ready to go. For template use <code>&lt;?php show_interesting_links(); ?&gt;</code> .
-Version: 0.1
+Version: 0.2.11
 Change Log:
+2010-02-15  0.2.11: changed css path
 2010-02-15  0.1: First release
 */
 
@@ -251,8 +252,8 @@ $wpdb->insert($wpdb->prefix."i_list",array('name'=>$_POST['nano'], 'mailu'=>$_PO
     add_action('wp_print_styles', 'add_my_stylesheet');
 
     function add_my_stylesheet() {
-        $myStyleUrl = WP_PLUGIN_URL . '/interesting_links_list/ilist.css';
-        $myStyleFile = WP_PLUGIN_DIR . '/interesting_links_list/ilist.css';
+        $myStyleUrl = WP_PLUGIN_URL . '/interesting-links-list/ilist.css';
+        $myStyleFile = WP_PLUGIN_DIR . '/interesting-links-list/ilist.css';
         if ( file_exists($myStyleFile) ) {
             wp_register_style('myStyleSheets', $myStyleUrl);
             wp_enqueue_style( 'myStyleSheets');
@@ -266,7 +267,7 @@ function add_i_list_js(){
 echo '<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 <script type="text/javascript">google.load("jquery", "1");</script>
 ';
-echo '<script type="text/javascript" src="'.WP_PLUGIN_URL .'/interesting_links_list/ilist.js"></script>
+echo '<script type="text/javascript" src="'.WP_PLUGIN_URL .'/interesting-links-list/ilist.js"></script>
 ';
 }
 
