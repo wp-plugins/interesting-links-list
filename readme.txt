@@ -10,7 +10,7 @@ Show in post/page, a list of links and let any visitor contribute. Insert "[inte
 
 == Description ==
 
-Interesting Links List is a WordPress  plugin that allows you to create a list of links you like and insert it on any post or pages. The interesting part is that anyone can propose and immediately submit any link. From the admin menu you can select what link to include in the list.
+Interesting Links List is a WordPress  plugin, that allows you to create a list of links you like and insert it on any post or pages. The interesting part is that anyone can propose and immediately submit any link. From the admin menu you can select what link to include in the list.
 
 Features
 
