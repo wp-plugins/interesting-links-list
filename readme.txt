@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: Madalin.F
-Donate link: 
+Donate link: -
 Tags: links, list
 Requires at least: 2.8.4
 Tested up to: 2.9.2
