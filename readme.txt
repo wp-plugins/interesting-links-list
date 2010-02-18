@@ -41,7 +41,10 @@ Please check http://wp.linkzone.ro.
 
 == Screenshots ==
 
-Available at http://wp.linkzone.ro
+1. Overview
+2. Adminsistration menu
+
+More available at http://wp.linkzone.ro
 
 == Changelog ==
 
