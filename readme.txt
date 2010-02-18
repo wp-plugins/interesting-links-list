@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: Madalin.F
-Donate link: -
+Donate link: 
 Tags: links, list
 Requires at least: 2.8.4
 Tested up to: 2.9.2
@@ -17,8 +17,7 @@ Features
     * allow you to create the list on your own,
     * anyone can submit link without any registration,
     * admin must approve the submitted links ,
-    * links are displayed automatically in any post
- and page by inserting [ interesting ] in post/page body,
+    * links are displayed automatically in any post and page by inserting [ interesting ] in post/page body,
     * list title is editable as the submit text,
     * the submit form has Sliding Labels feature
 
@@ -34,24 +33,20 @@ Installation is like any WordPress plugin:
 
 == Frequently Asked Questions ==
 
-= Any questions =
+= The plugin doesn't work. =
 
-Please check http://wp.linkzone.ro.
+Please scheck http://wp.linkzone.ro.
 
 
 == Screenshots ==
 
-1. Overview
-2. Adminsistration menu
-
-More available at http://wp.linkzone.ro
+Available at http://wp.linkzone.ro
 
 == Changelog ==
 
 
-
 = 0.1 =
-2/15/2010 - first release.
+2/15/2010 - first release
 
 
 
