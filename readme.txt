@@ -17,7 +17,8 @@ Features
     * allow you to create the list on your own,
     * anyone can submit link without any registration,
     * admin must approve the submitted links ,
-    * links are displayed automatically in any post and page by inserting [ interesting ] in post/page body,
+    * links are displayed automatically in any post
+ and page by inserting [ interesting ] in post/page body,
     * list title is editable as the submit text,
     * the submit form has Sliding Labels feature
 
@@ -44,9 +45,11 @@ Available at http://wp.linkzone.ro
 
 == Changelog ==
 
+= 0.2 =
+2/18/2010 - updated plugin css path.
 
 = 0.1 =
-2/15/2010 - first release
+2/15/2010 - first release.
 
 
 
