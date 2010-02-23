@@ -4,7 +4,7 @@ Donate link: -
 Tags: links, list
 Requires at least: 2.8.4
 Tested up to: 2.9.2
-Stable Tag: 0.2.12
+Stable Tag: 0.2.13
 
 Show in post/page, a list of links and let any visitor contribute. Insert "[interesting]" in  post/page and you're ready to go. template use <?php show_interesting_links(); ?>
 
