@@ -1,34 +1,38 @@
 === Plugin Name ===
-Contributors: Madalin.F
+Contributors: Madalin.F, CK MacLeod
 Donate link: -
-Tags: links, list
+Tags: links, list, form, link submission
 Requires at least: 2.8.4
 Tested up to: 2.9.2
-Stable Tag: 0.2.13
+Stable Tag: 0.2.14
 
 Show in post/page, a list of links and let any visitor contribute. Insert "[interesting]" in  post/page and you're ready to go. template use <?php show_interesting_links(); ?>
 
 == Description ==
 
-Interesting Links List is a WordPress  plugin that allows you to create a list of links you like and insert it on any post or pages. The interesting part is that anyone can propose and immediately submit any link. From the admin menu you can select what link to include in the list.
+Interesting Links List is a WordPress plugin that allows you to create a list of links from user submissions, and insert it on any post or page, continually updating it at will as new submissions come in. Using a form displayed with the list, anyone can propose and immediately submit a URL of interest, adding a title and identifying themselves if they choose to. From the admin menu you can determine which links to display, add links directly, and edit and update all content.
 
 Features
 
-    * allow you to create the list on your own,
-    * anyone can submit link without any registration,
-    * admin must approve the submitted links ,
-    * links are displayed automatically in any post and page by inserting [ interesting ] in post/page body,
-    * list title is editable as the submit text,
+    * allows you to create the list on your own
+    * anyone can submit link without any registration
+    * admin must approve the submitted links
+    * links are displayed automatically in any post and page
+    * usage by inserting tag - [ interesting ] - in post/page body
+    * title and form text are editable via admin
     * the submit form has Sliding Labels feature
-
+    * Sliding Labels feature can be disabled/enabled
+    * e-mail notification when new links are submitted
+	
+	
 == Installation ==
 
 
 Installation is like any WordPress plugin:
 
-    * Download Interesting Links List
+	* Download Interesting Links List
     * Unzip
-    * Upload the interesting_links_list directory to /wp-content/plugins on your server
+    * Upload the interesting-links-list directory to /wp-content/plugins on your server
     * Activate the plugin
 
 == Frequently Asked Questions ==
@@ -42,10 +46,27 @@ Please check http://wp.linkzone.ro.
 
 1. Overview
 2. Adminsistration menu
+3. Sliding Labels feature disabled
 
 More available at http://wp.linkzone.ro
 
 == Changelog ==
+
+= 0.2.14 =
+3/14/2010
+
+* e-mail notification of new link submissions
+* strip slashes for special characters
+
+= 0.2.13 =
+2/23/2010
+
+* fix duplicate from submission bug
+
+= 0.2.12 =
+More admin options
+* jQuery can be enabled/disabled
+* "Submitted by" under each link can be shown or hidden
 
 = 0.2.1 =
 2/18/2010 - updated plugin css path.
@@ -57,7 +78,7 @@ More available at http://wp.linkzone.ro
 
 == Upgrade Notice ==
 
-First release, no notice
+= 0.2.14 =
+DB tales structure is modified so don't forded to deactivate the plugin before you upgrade it.
 
 
-== A brief Markdown Example ==
