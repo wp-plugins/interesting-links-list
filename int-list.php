@@ -5,8 +5,11 @@ Plugin URI: http://wp.linkzone.ro/interesting-links-list/
 Author: Madalin F. , CK MacLeod
 Author URI: http://ckmac.com/thewholething/
 Description: Show in post or page, a list of links you choose and let any visitor contribute. To use it insert "[interesting]" in any post or page body and you're ready to go. For template use <code>&lt;?php show_interesting_links(); ?&gt;</code> .
-Version: 0.2.14
+Version: 0.2.15
 Change Log:
+2010-04-08  0.2.15: 
+* anti-spam measures taken, no HTML tags allowed in URL title
+
 2010-03-14  0.2.14: 
 * e-mail notification of new link submissions
 * strip slashes for special characters
@@ -377,13 +380,17 @@ if($_POST['newprop'] == $post->ID ){
 	if(!strstr($url, "http://")){
         $url = "http://".$url;
     }
-
-	$wpdb->insert($wpdb->prefix."i_list",array('name'=>$_POST['nano'], 'mailu'=>$_POST['mailu'], 'text'=> $_POST['text'], 'url'=>$url));
+// see if the description contains any code or HTML tags 
+	if (preg_match("/\[[^\[]+?]|<[^<]+?>/", $_POST['text'])) {
+    $eroareurl = "A  URL/HTML match was found. NO HTML ALLOWED";
+} else {
+    	$wpdb->insert($wpdb->prefix."i_list",array('name'=>$_POST['nano'], 'mailu'=>$_POST['mailu'], 'text'=> $_POST['text'], 'url'=>$url));
 	$aa = stripslashes($_POST['nano']);
 	$ab = stripslashes($_POST['mailu']);
 	$ac = stripslashes($_POST['text']);
 	$ad = $wpdb->insert_id;
 	do_action( i_list_mail, $aa, $ab, $ac, $url, $ad );
+}
 }
 }
 

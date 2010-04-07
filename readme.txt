@@ -4,7 +4,7 @@ Donate link: -
 Tags: links, list, form, link submission
 Requires at least: 2.8.4
 Tested up to: 2.9.2
-Stable Tag: 0.2.14
+Stable Tag: 0.2.15
 
 Show in post/page, a list of links and let any visitor contribute. Insert "[interesting]" in  post/page and you're ready to go. template use <?php show_interesting_links(); ?>
 
@@ -51,6 +51,10 @@ Please check http://wp.linkzone.ro.
 More available at http://wp.linkzone.ro
 
 == Changelog ==
+
+= 0.2.15 =
+4/08/2010
+* anti-spam measures taken, no HTML tags allowed in URL title
 
 = 0.2.14 =
 3/14/2010
