@@ -5,7 +5,7 @@ Plugin URI: http://wp.linkzone.ro/interesting-links-list/
 Author: Madalin F. 
 Author URI: http://wp.linkzone.ro/
 Description: Show in post or page, a list of links you choose and let any visitor contribute. To use it insert "[interesting]" in any post or page body and you're ready to go. For template use <code>&lt;?php show_interesting_links(); ?&gt;</code> .
-Version: 0.2.2.0
+Version: 0.2.20
 Change Log:
 
 2010-04-08  0.2.20:
