@@ -4,7 +4,7 @@ Donate link: -
 Tags: links, list, form, link submission
 Requires at least: 2.8.4
 Tested up to: 3.4.1
-Stable Tag: 0.2.2.0
+Stable Tag: 0.2.20
 
 Show in post/page, a list of links and let any visitor contribute. Insert "[interesting]" in  post/page and you're ready to go. template use <?php show_interesting_links(); ?>
 
@@ -52,13 +52,15 @@ More available at http://wp.linkzone.ro
 
 == Changelog ==
 
-= 0.2.2.0 =
+= 0.2.20 =
 7/17/2012
+
 * back to development 
-*tested with WordPress Version 3.4.1 
+* tested with WordPress Version 3.4.1 
 
 = 0.2.15 =
 4/08/2010
+
 * anti-spam measures taken, no HTML tags allowed in URL title
 
 = 0.2.14 =
@@ -73,6 +75,7 @@ More available at http://wp.linkzone.ro
 * fix duplicate from submission bug
 
 = 0.2.12 =
+
 More admin options
 * jQuery can be enabled/disabled
 * "Submitted by" under each link can be shown or hidden
