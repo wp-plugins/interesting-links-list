@@ -1,0 +1,12 @@
+#info                     { width:170px;padding:10px 0px 20px 5px ;margin:10px;background:#f7f7f7;border:1px solid #ddd; float:right; text-align:left; }
+#ilist-wrap                       { clear:both;position:relative;margin:0 0 10px; }
+#ilist-wrap  label                      { cursor:pointer;display:block; }
+#ilist-wrap  input[type="text"], #ilist-wrap textarea          { width:150px;border:1px solid #999;padding:5px;-moz-border-radius:4px;text-align:left; }
+#ilist-wrap input[type="text"]:focus   { border-color:#777; }
+
+
+/* submit button */
+#ilist-wrap input[type="submit"]       { cursor:pointer;border:1px solid #999;padding:5px;-moz-border-radius:4px;background:#eee; }
+#ilist-wrap input[type="submit"]:hover,
+#ilist-wrap input[type="submit"]:focus { border-color:#333;background:#ddd; }
+#ilist-wrap input[type="submit"]:active{ margin-top:1px; }
