@@ -5,8 +5,15 @@ Plugin URI: http://wp.linkzone.ro/interesting-links-list/
 Author: Madalin F. 
 Author URI: http://wp.linkzone.ro/
 Description: Show in post or page, a list of links you choose and let any visitor contribute. To use it insert "[interesting]" in any post or page body and you're ready to go. For template use <code>&lt;?php show_interesting_links(); ?&gt;</code> .
-Version: 0.3
+Version: 0.3.5
 Change Log:
+
+2012-07-23  0.3.5:
+* ability to generate as many list as the user wants
+* multiple lists, can display one specific list [interesting  name={list name}]
+* form can be disable on [interesting  name={list name} form=0]
+* added pagination
+
 
 2012-07-17  0.3:
 * update from oldversion
@@ -51,11 +58,13 @@ function i_list_options(){
 			$form_questions["description"]=$f_q["description"];
 			$form_questions["url"]=$f_q["url"];
 			$form_questions["dsp"]=$f_q["dsp"];
+			$form_questions["newlist"]=$f_q["newlist"];
 		// Get them into the database
-			$wpdb->insert($wpdb->prefix."i_list",array('name'=>$form_questions["name"], 'mailu'=>$_POST['mailu'], 'text'=> $form_questions["description"], 'url'=>$form_questions["url"],'dsp'=>$form_questions["dsp"]));
+			$wpdb->insert($wpdb->prefix."i_list",array('name'=>$form_questions["name"], 'mailu'=>$_POST['mailu'], 'text'=> $form_questions["description"], 'url'=>$form_questions["url"],'dsp'=>$form_questions["dsp"],'l_name'=>$form_questions["newlist"]));
 	}
 	if($_POST['updateform']>0){
 		$wpdb->update($wpdb->prefix."i_list",array('name'=>$_POST['name'],'dsp'=>$_POST["dsp"], 'mailu'=>$_POST['mailu'],'text'=>$_POST["description"], 'url'=>$_POST["url"], 'iorder'=>$_POST['order']),array( 'id' => $_POST['updateform'] ));
+		$update_confirm = '<div id="message" class="updated fade"><p><strong>'.stripslashes($_POST['description']).' was updated successfully.</strong></p></div>';
 	}
 	if($_GET['update_order_i']){
 		$myilink = $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."i_list WHERE id =".$_GET['i_list_id']);
@@ -122,7 +131,7 @@ update_option('i_list_all_options', $new);
 					</p>
 
 </form>
-<h2><b>Add New</b></h2>
+<h2><b>Add New Item to List</b></h2>
 			<form method="post" action="">
 			<table class="form-table">
 				<tr>
@@ -130,7 +139,8 @@ update_option('i_list_all_options', $new);
 					<th scope="col">Mail</th>
 					<th scope="col">URL Title</th>
 					<th scope="col">URL</th>
-					<th scope="col">display</th>
+					<th scope="col">Display</th>
+					<th scope="col">List Name</th>
 				</tr>
 				<tr>
 					<td><input type="text" name="name" size="25" /></td>
@@ -139,23 +149,52 @@ update_option('i_list_all_options', $new);
 					<td><input type="text" name="url" size="40" /></td>
 					<td><select name="dsp"><option value="1" selected="selected">Yes</option>
   <option value="0">No</option>
- </select></td>
+					<td id="newl"><select id="newlist" name="newlist" onchange="if(document.getElementById(\'newlist\').value==\'create\'){document.getElementById(\'newl\').innerHTML=\'<input type=\\\'text\\\' name=\\\'newlist\\\' size=\\\'25\\\' />\'}" ><option value="default" selected="selected">default</option>
+  <option value="create">Create New List</option>';
+		$db_lists = $wpdb->get_results("SELECT * from ".$wpdb->prefix."i_list GROUP BY l_name");
+		foreach ($db_lists as $db_list) {
+			if($db_list->l_name !="default"){
+			echo "<option value='".$db_list->l_name."' >".$db_list->l_name."</option>'";
+			}
+		}
+		echo '</select></td>
 				</tr>
 				<tr>
 					<td colspan="5" align="center">
 						<input type="hidden" name="addnewform" value="1"/>
-						<input type="submit" value="Save" />
+						<input type="submit" class="button-primary" value="Add New" />
 					</td>
 				</tr>
 		';
 	echo 	'</table></form>';
-	echo '<h2>Interesting LINKS List <b>Edit</b></h2>';
+	echo '<p>Interesting LINKS List <b>Change List: </b> <select style="" id="avllists" name="avllists" onchange="document.location.href =\'options-general.php?page=i_list_unique&amp;list=\'+this.options[this.selectedIndex].value"><option value="" selected="selected">Select list</option>';
+	 
 	
-		$db_questions = $wpdb->get_results("SELECT * from ".$wpdb->prefix."i_list order by iorder DESC");
-		foreach ($db_questions as $db_question) {$i++;
+		foreach ($db_lists as $db_list) {
+			echo "<option value='".$db_list->l_name."' >".$db_list->l_name."</option>'";
+		}
+	
+	echo '</select></p>';
+
+		if($_GET['start']){
+			$start = $_GET['start'];
+		}
+		else{
+			$start = 0;
+		}
+		if(!$_GET['list']){
+			$list = "default";
+		}
+		else{
+			
+			$list = $_GET['list'];
+		}
+	echo "<h2>Editing List: $list. Display only this list by inserting into post/page [interesting name=$list]</h2>";
+		$db_questions = $wpdb->get_results("SELECT * from ".$wpdb->prefix."i_list WHERE l_name = '$list' order by iorder DESC LIMIT $start , 10");
+		foreach ($db_questions as $db_question) {
 			echo 
 				'
-				<form method="post" action="options-general.php?page=i_list_unique">
+				<form method="post" action="options-general.php?page=i_list_unique&amp;list='.$list.'">
 					<table class="form-table">
 					
 						<tr>
@@ -191,13 +230,53 @@ update_option('i_list_all_options', $new);
 
 echo	'</td><td><input  type="text" name="order" size="3" value="'.stripslashes($db_question->iorder).'"/><br><strong><a style="text-decoration:none"  href="options-general.php?page=i_list_unique&amp;i_list_id='.$db_question->id.'&amp;update_order_i=1">&nbsp; &uarr; &nbsp;</a>
 <a style="text-decoration:none"  href="options-general.php?page=i_list_unique&amp;i_list_id='.$db_question->id.'&amp;update_order_i=-1" ">&nbsp; &darr; &nbsp;</a></strong></td>
-<td><input type="hidden" name="updateform" value="'.$db_question->id.'"/><input type="submit" value="Update" />
-<a href="options-general.php?page=i_list_unique&amp;delete='.$db_question->id.'" class="submitdelete deletion" onclick="return confirm(\'You sure you want to delete?\');">Delete</a></td>
+<td><input type="hidden" name="updateform" value="'.$db_question->id.'"/><input type="submit" value="Update" /><a href="options-general.php?page=i_list_unique&amp;delete='.$db_question->id.'&amp;list='.$list.'" class="submitdelete deletion" onclick="return confirm(\'You sure you want to delete?\');"><input type="button" value="Delete"></a>
+
+</td>
 </tr>
 					</table>
 				</form>';
 		}
+	
+	$list_count = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM ".$wpdb->prefix."i_list WHERE l_name = '$list';" ) );
 
+	$pag_t = floor($list_count/10);
+	
+	
+	
+	/////////////pagination
+	$pagination = "";
+	$pagination .= "<div class=\"tablenav-pages\"><span class=\"displaying-num\">$list_count items</span><span class=\"pagination-links\"><br />";
+	// previous button
+	$next_p=$start +10;
+	$prv_p=$start -10;
+	if($start != 0){	 
+		$pagination.= "<a class='first-page' title='Go to the previous page' href='options-general.php?page=i_list_unique&amp;start=$prv_p&amp;list=$list'>&laquo;</a>";
+		}
+	//pages no.
+	$i=1;
+	for ($counter = 0; $counter <= $pag_t; $counter++){
+		
+		if ($counter == $start/10){
+			$pagination.= "<span class=\"paging-input\">$i</span>";
+			
+			}
+		else{
+			$pagination.= "<a href=\"options-general.php?page=i_list_unique&amp;start=". $counter*10 . "&amp;list=$list\"><span class=\"paging-input\">$i</span></a>";
+			
+			}
+			
+		$i= $i +1;
+		}
+	//NEXT button
+	if ($start < $pag_t *10){
+			$pagination.= "<a class=\"last-page\" title=\"Go to the next page\" href=\"options-general.php?page=i_list_unique&amp;start=$next_p&amp;list=$list\">&raquo;</a>";
+			
+		}
+		$pagination.= "</span></div>";
+	echo $pagination;
+	
+	
 	echo 	'</div>';
 	
 }
@@ -208,8 +287,8 @@ register_activation_hook(__FILE__, 'ilist_activate');
 function ilist_activate() {
 	global $wpdb;
 	global $i_list_db_version;
-	$i_list_db_version = "0.2";
-	// Creating Questions Table
+	$i_list_db_version = "0.3.5";
+	// Creating Table
 	$table_name = $wpdb->prefix . "i_list";
 	if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") != $table_name) {
 			$sql = "CREATE TABLE " . $table_name . " (
@@ -220,41 +299,39 @@ function ilist_activate() {
 		  text text NOT NULL,
 		  url VARCHAR(500) NOT NULL,
 		  iorder MEDIUMINT(9) NOT NULL DEFAULT '0',
+		  l_name tinytext NOT NULL,
 		  UNIQUE KEY id (id)
 			);";
 			
 			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 			dbDelta($sql);
 			 $insert = "INSERT INTO " . $table_name .
-				" (name, mailu, text, url, dsp) " .
-				"VALUES ('Madalin.F','contact@linkzone.ro', 'Interesting LINKS List WordPress Plugin','http://wp.linkzone.ro','1' )";
+				" (name, mailu, text, url, dsp, l_name) " .
+				"VALUES ('Madalin.F','contact@linkzone.ro', 'Interesting LINKS List WordPress Plugin','http://wp.linkzone.ro','1' ,'default')";
 			$results = $wpdb->query( $insert );
+			add_option("i_list_db_version", $i_list_db_version); 
 
 		}
 
 		
-		add_option("i_list_db_version", $i_list_db_version); // If the database is ever needed to be updated
 		
 		$installed_ver = get_option( "i_list_db_version" );
 
 	   if( $installed_ver != $i_list_db_version ) {
 
-		       $sql = "CREATE TABLE " . $table_name . " (
-				  id mediumint(9) NOT NULL AUTO_INCREMENT,
-				  dsp bigint(11) DEFAULT '0' NOT NULL,
-				  name tinytext NOT NULL,
-				  mailu VARCHAR(100) NOT NULL,
-				  text text NOT NULL,
-				  url VARCHAR(500) NOT NULL,
-				  iorder MEDIUMINT(9) NOT NULL DEFAULT '0',
-				  UNIQUE KEY id (id)
-				);";
+		    $sql = "ALTER TABLE $table_name ADD l_name TINYTEXT NOT NULL";
+			$wpdb->query($sql);
 
-      require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-      dbDelta($sql);
+      //require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+      //dbDelta($sql);
 
+	  $insert = "INSERT INTO " . $table_name .
+				" (name, mailu, text, url, dsp) " .
+				"VALUES ('Madalin.M','contact@linkzone.ro', 'Interesting LINKS List WordPress Plugin','http://wp.linkzone.ro','1')";
+		$wpdb->query( $insert );
+		$wpdb->query("UPDATE $table_name SET l_name = 'default' WHERE id > 0");
 
-		  update_option( "i_list_db_version", $i_list_db_version );
+		  update_option( "i_list_db_version", $i_list_db_version);
 		}
 
 
@@ -268,9 +345,21 @@ function ilist_activate() {
 }
 
 
-function show_interesting_links(){
+function show_interesting_links($atts){
 	global $wpdb, $post ;
-	$db_questions = $wpdb->get_results("SELECT * from ".$wpdb->prefix."i_list where dsp = 1 order by iorder DESC");
+	
+	extract( shortcode_atts( array(
+		'name' => 'default',
+		'form' => '1',
+		), $atts ) );
+	add_props();
+	if ($name != ''){
+		$get_list = "and l_name ='$name'";
+	}
+	else{
+		$get_list ="";		
+	}
+	$db_questions = $wpdb->get_results("SELECT * from ".$wpdb->prefix."i_list where dsp = 1 ".$get_list." order by iorder DESC");
 	$i_options = get_option("i_list_all_options");
 	if($_POST['newprop']){
 	 $ok= "<script language=\"javascript\"> 
@@ -300,11 +389,15 @@ setTimeout(\"document.getElementById('fade').style.display = 'none'\",4500);
 				   </div>
 
 <input type="hidden" name="newprop" value="' . $post->ID . '" />
+<input type="hidden" name="l_list" value="' . $name. '" />
 
 				   <input type="submit" id="btn"  value="submit">
 				</form>
 				';}
-$mieru = '<h2>'.stripslashes($i_options["i_list_p_title"]).'</h2><br clear="all" /><form action="" method="post" id="info" onsubmit="javascript:return validate(\'info\',\'email\')";>
+
+				$mieru ='<h2>'.stripslashes($i_options["i_list_p_title"]).'</h2>';
+				if ($form == '1'){
+				$mieru .= '<br clear="all" /><form action="" method="post" id="info" onsubmit="javascript:return validate(\'info\',\'email\')";>
 				   <h2>'. stripslashes($i_options["i_list_s_title"]).'</h2>
 '. $ok  .'
 				   <div id="ilist-wrap" class="slider">
@@ -325,16 +418,18 @@ $mieru = '<h2>'.stripslashes($i_options["i_list_p_title"]).'</h2><br clear="all"
 				   </div>
 
 <input type="hidden" name="newprop" value="' . $post->ID . '" />
+<input type="hidden" name="l_list" value="' . $name. '" />
 				   <input type="submit" id="btn"  value="submit">
 				</form>
 				';
+				}
 	$mieru .= '<ul>';
 		foreach ($db_questions as $db_question) {$i++;
 			$mieru.='<li><a href="'.$db_question->url.'" onmouseover="">'.stripslashes($db_question->text).'</a></li>';
 			
-if ( $i_options["i_list_contributor"] == "yes"){
-$mieru.='<span id="more'.$i.'">Submitted by: '.stripslashes($db_question->name).'</span>';
-}
+			if ( $i_options["i_list_contributor"] == "yes" ){
+				$mieru.='<span id="more'.$i.'">Submitted by: '.stripslashes($db_question->name).'</span>';
+			}
 			
 			
 		}
@@ -343,19 +438,8 @@ $mieru.='<span id="more'.$i.'">Submitted by: '.stripslashes($db_question->name).
 	return $mieru ;
 }
 
+add_shortcode( 'interesting', 'show_interesting_links' );
 
-add_filter('the_content', 'add_list_to_content'); 
- 
-function add_list_to_content($content){
-global $post;
-	if($_POST['newprop']){
-		add_props();
-	}
-	if(preg_match_all("[interesting]",$content,$matches)){
-		$content= str_replace("[interesting]",show_interesting_links(),$content);
-	}
-	return $content;
-}
 
 function i_list_email_notification ($aa, $ab, $ac, $url, $ad )  {
     $friends = get_bloginfo('admin_email');
@@ -392,7 +476,7 @@ if($_POST['newprop'] == $post->ID ){
 	if (preg_match("/\[[^\[]+?]|<[^<]+?>/", $_POST['text'])) {
     $eroareurl = "A  URL/HTML match was found. NO HTML ALLOWED";
 } else {
-    	$wpdb->insert($wpdb->prefix."i_list",array('name'=>$_POST['nano'], 'mailu'=>$_POST['mailu'], 'text'=> $_POST['text'], 'url'=>$url));
+    	$wpdb->insert($wpdb->prefix."i_list",array('name'=>$_POST['nano'], 'mailu'=>$_POST['mailu'], 'text'=> $_POST['text'], 'url'=>$url, 'l_name'=>$_POST['l_list']));
 	$aa = stripslashes($_POST['nano']);
 	$ab = stripslashes($_POST['mailu']);
 	$ac = stripslashes($_POST['text']);

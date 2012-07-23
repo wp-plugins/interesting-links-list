@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: Madalin.F
-Donate link: -
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=AAHNWWTQXV2BS
 Tags: links, list, form, link submission
 Requires at least: 2.8.4
 Tested up to: 3.4.1
@@ -51,6 +51,14 @@ Please check http://wp.linkzone.ro.
 More available at http://wp.linkzone.ro
 
 == Changelog ==
+
+
+= 0.3.5 =
+
+* ability to generate as many list as the user wants
+* multiple lists, can display one specific list [interesting  name={list name}]
+* form can be disable on [interesting  name={list name} form=0]
+* added pagination
 
 = 0.3 =
 7/17/2012
