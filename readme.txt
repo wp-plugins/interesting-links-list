@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: links, list, form, link submission
 Requires at least: 2.8.4
 Tested up to: 3.4.1
-Stable Tag: 0.3
+Stable Tag: 0.3.5
 
 Show in post/page, a list of links and let any visitor contribute. Insert "[interesting]" in  post/page and you're ready to go. template use <?php show_interesting_links(); ?>
 
